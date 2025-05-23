@@ -1,12 +1,24 @@
 <?php
 
+use App\Http\Controllers\Api\v1\Auth\AdminController;
+use App\Http\Controllers\Api\v1\Auth\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/admin/ping', function () {
-    return response()->json(['message' => 'Admin API alive']);
+// Admin Routes
+Route::post('/admin-login', [AdminController::class, 'login']);
+Route::post('/login', [UserController::class, 'login']);
+
+// User Routes
+Route::post('/user-registration', [UserController::class, 'register']);
+
+Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
+    Route::post('/admin/logout', [AdminController::class, 'logout']);
 });
 
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [UserController::class, 'logout']);
+});
 
 Route::get('/user', function (Request $request) {
     return $request->user();
