@@ -15,7 +15,9 @@ return new class extends Migration
             $table->text('two_factor_secret')->nullable();
             $table->text('two_factor_recovery_codes')->nullable();
             $table->enum('two_factor_type', ['totp', 'email'])->nullable();
+            $table->string('two_factor_email_code')->nullable();
             $table->boolean('two_factor_enabled')->default(false);
+            $table->timestamp('two_factor_expires_at')->nullable();
         });
     }
 

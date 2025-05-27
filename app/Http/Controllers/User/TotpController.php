@@ -10,7 +10,7 @@ class TotpController extends Controller
 {
     public function showQrCode()
     {
-        $otpauthurl = 'otpauth://totp/efetega%40gmail.com?secret=76ZHJNBSCUIPKV22SSN6UG42WNVK4KSANIQFBNPQCJNMG6Q6XX3USLAJQBABOZFJ3RGUQKOWEP35TB4P63IFKFNLVY7NJADUDATMGMQ';
+        $otpauthurl = 'otpauth://totp/Smart%20Broker:user%40gmail.com?secret=NOYLHYMC7FVFH3P7&issuer=Smart%20Broker&algorithm=SHA1&digits=6&period=30';
 
         // Generate QR code data
         $qrCode = QrCode::size(250)->generate($otpauthurl);

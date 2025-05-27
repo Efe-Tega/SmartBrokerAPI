@@ -9,10 +9,12 @@ use Illuminate\Support\Facades\Route;
 
 // Admin Routes
 Route::post('/admin-login', [AdminController::class, 'login']);
-Route::post('/login', [UserController::class, 'login']);
 
 // User Routes
 Route::post('/user-registration', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login']);
+Route::post('/2fa/verify', [UserController::class, 'verify2FA']);
+
 
 
 Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {

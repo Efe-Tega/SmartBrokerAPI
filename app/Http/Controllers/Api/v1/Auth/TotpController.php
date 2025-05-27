@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use OTPHP\TOTP;
+use PragmaRX\Google2FA\Google2FA;
 
 class TotpController extends Controller
 {
@@ -13,17 +14,22 @@ class TotpController extends Controller
     {
         $user = Auth::user();
 
-        $totp = TOTP::create();
-        $totp->setLabel($user->email);
-        $secret = $totp->getSecret();
+        $google2fa = new Google2FA();
+        $secret = $google2fa->generateSecretKey();
 
         $user->two_factor_secret = encrypt($secret);
         $user->two_factor_type = 'totp';
         $user->save();
 
+        $qrCodeUrl = $google2fa->getQRCodeUrl(
+            config('app.name'),
+            $user->email,
+            $secret
+        );
+
         return response()->json([
             'secret' => $secret,
-            'qr_code_url' => $totp->getProvisioningUri()
+            'qr_code_url' => $qrCodeUrl
         ]);
     }
 
@@ -32,10 +38,10 @@ class TotpController extends Controller
         $request->validate(['code' => 'required']);
 
         $user = auth()->user();
+        $google2fa = new Google2FA();
         $secret = decrypt($user->two_factor_secret);
-        $totp = TOTP::create($secret);
 
-        if (!$totp->verify($request->code)) {
+        if (!$google2fa->verifyKey($secret, $request->code)) {
             return response()->json(['message' => 'Invalid code'], 400);
         }
 
