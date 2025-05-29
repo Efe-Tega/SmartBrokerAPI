@@ -11,7 +11,7 @@
 <body>
     <div class="text-center py-5">
         <h1 class="text-danger">Unexpected Error</h1>
-        <p class="lead">{{ $exception->getMessage() }}</p>
+        <p class="lead">{{ $errorMessage }}</p>
         <a href="{{ url('/') }}" class="btn btn-primary mt-3">Go Home</a>
     </div>
 </body>
