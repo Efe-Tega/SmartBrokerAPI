@@ -12,13 +12,14 @@ use Illuminate\Queue\SerializesModels;
 class TwoFactorEmailCode extends Mailable
 {
     use Queueable, SerializesModels;
+    public $code;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($code)
     {
-        //
+        $this->code = $code;
     }
 
     /**
@@ -37,7 +38,8 @@ class TwoFactorEmailCode extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'emails.2fa-code',
+            with: ['code' => $this->code]
         );
     }
 

@@ -60,6 +60,15 @@ class UserController extends Controller
             $twoFaToken = encrypt($google2fa->generateSecretKey());
             cache()->put("2fa:$twoFaToken", $user->id, now()->addMinutes(5));
 
+            if ($user->two_factor_type === 'totp') {
+                return response()->json([
+                    '2fa_required' => true,
+                    'type' => 'totp',
+                    '2fa_token' => $twoFaToken,
+                    // 'redirect_url' => route('2fa.totp.form')
+                ]);
+            }
+
             if ($user->two_factor_type === 'email') {
                 $code = rand(100000, 999999);
                 $user->two_factor_email_code = $code;
@@ -68,13 +77,13 @@ class UserController extends Controller
 
                 // Send email
                 Mail::to($user->email)->send(new \App\Mail\TwoFactorEmailCode($code));
-            }
 
-            return response()->json([
-                '2fa_required' => true,
-                'type' => $user->two_factor_type,
-                '2fa_token' => $twoFaToken
-            ]);
+                return response()->json([
+                    '2fa_required' => true,
+                    'type' => $user->two_factor_type,
+                    '2fa_token' => $twoFaToken
+                ]);
+            }
         }
 
         // No 2Fa, issue token

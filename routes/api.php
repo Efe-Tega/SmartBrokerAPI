@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\Auth\AdminController;
+use App\Http\Controllers\Api\v1\Auth\EmailAuthController;
 use App\Http\Controllers\Api\v1\Auth\TotpController;
 use App\Http\Controllers\Api\v1\Auth\UserController;
 use App\Http\Controllers\Api\v1\User\UserProfileController;
@@ -28,6 +29,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(TotpController::class)->group(function () {
         Route::post('/2fa/enable-totp', 'enableTotp');
         Route::post('/2fa/setup',  'setupTotp');
+    });
+
+    // Email Authentication Controller
+    Route::controller(EmailAuthController::class)->group(function () {
+        Route::post('/2fa/setup-email', 'setupEmail');
+        Route::post('/2fa/enable-email', 'enableEmail');
     });
 });
 
