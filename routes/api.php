@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\v1\Auth\AdminController;
 use App\Http\Controllers\Api\v1\Auth\EmailAuthController;
 use App\Http\Controllers\Api\v1\Auth\TotpController;
 use App\Http\Controllers\Api\v1\Auth\UserController;
+use App\Http\Controllers\Api\v1\User\TransactionController;
 use App\Http\Controllers\Api\v1\User\UserProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,6 +36,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(EmailAuthController::class)->group(function () {
         Route::post('/2fa/setup-email', 'setupEmail');
         Route::post('/2fa/enable-email', 'enableEmail');
+    });
+
+    // Transactions
+    Route::controller(TransactionController::class)->group(function () {
+        // Ajax Request
+        Route::get('/fetch/wallet-address', 'fetchWalletAddress');
+
+        Route::post('/deposit', 'cryptoDeposit');
     });
 });
 
