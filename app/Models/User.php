@@ -33,6 +33,16 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function kycProfile()
+    {
+        return $this->hasOne(KycRequest::class);
+    }
+
+    public function balance()
+    {
+        return $this->hasOne(AccountInfo::class);
+    }
+
     /**
      * Get the attributes that should be cast.
      *

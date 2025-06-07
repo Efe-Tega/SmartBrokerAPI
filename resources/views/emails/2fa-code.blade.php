@@ -1,10 +1,16 @@
 @component('mail::message')
-# Two-Factor Code
+    # Two-Factor Verification Code
 
-Your verification code is: **{{ $code }}**
+    Your verification code is: **{{ $code }}**
 
-It will expire in 10 minutes.
+    @if ($amount)
+        This code is to confirm a withdrawal of **{{ number_format($amount, 2) }}**.
+    @endif
 
-Thanks,<br>
-{{ config('app.name') }}
+    This code will expire in 10 minutes.
+
+    If you did not request this, please contact our support team immediately.
+
+    Thanks,<br>
+    {{ config('app.name') }}
 @endcomponent

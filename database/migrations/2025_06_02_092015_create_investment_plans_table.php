@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\PackagePlan;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -12,15 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('investment_plans', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->string('currency')->nullable();
-            $table->string('amount')->nullable();
-            $table->string('crypto_value')->nullable();
-            $table->enum('status', ['pending', 'failed', 'success'])->default('pending');
-            $table->string('trans_id')->nullable();
-            $table->enum('trans_type', ['deposit', 'withdraw'])->nullable();
+            $table->foreignIdFor(PackagePlan::class)->nullable();
+            $table->string('plan_amount')->nullable();
+            $table->string('plan_profit')->nullable();
+            $table->enum('status', ['active', 'expired'])->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('investment_plans');
     }
 };

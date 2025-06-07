@@ -13,13 +13,15 @@ class TwoFactorEmailCode extends Mailable
 {
     use Queueable, SerializesModels;
     public $code;
+    public $amount;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($code)
+    public function __construct($code, $amount)
     {
         $this->code = $code;
+        $this->amount = $amount;
     }
 
     /**
@@ -39,7 +41,10 @@ class TwoFactorEmailCode extends Mailable
     {
         return new Content(
             markdown: 'emails.2fa-code',
-            with: ['code' => $this->code]
+            with: [
+                'code' => $this->code,
+                'amount' => $this->amount,
+            ]
         );
     }
 

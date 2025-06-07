@@ -34,6 +34,8 @@ class UserController extends Controller
             'created_at' => Carbon::now()
         ]);
 
+
+
         $token = $user->createToken('user_token')->plainTextToken;
 
         return response()->json([

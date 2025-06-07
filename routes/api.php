@@ -43,7 +43,12 @@ Route::middleware('auth:sanctum')->group(function () {
         // Ajax Request
         Route::get('/fetch/wallet-address', 'fetchWalletAddress');
 
+        // Deposit Transactions
         Route::post('/deposit', 'cryptoDeposit');
+
+        // Withdraw Transactions
+        Route::post('/withdrawal', 'requestWithdraw');
+        Route::post('/withdraw/verify', 'verifyWithdrawCode');
     });
 });
 
