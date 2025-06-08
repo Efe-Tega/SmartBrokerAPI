@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\Api\v1\Admin\InvestmentManagement;
 use App\Http\Controllers\Api\v1\Auth\AdminController;
 use App\Http\Controllers\Api\v1\Auth\EmailAuthController;
 use App\Http\Controllers\Api\v1\Auth\TotpController;
 use App\Http\Controllers\Api\v1\Auth\UserController;
+use App\Http\Controllers\Api\v1\User\InvestmentController;
 use App\Http\Controllers\Api\v1\User\TransactionController;
 use App\Http\Controllers\Api\v1\User\UserProfileController;
 use Illuminate\Http\Request;
@@ -18,9 +20,13 @@ Route::post('/login', [UserController::class, 'login']);
 Route::post('/2fa/verify', [UserController::class, 'verify2FA']);
 
 
-
 Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
+
+    // Investment Route
+    Route::controller(InvestmentManagement::class)->group(function () {
+        Route::post('/add/investment-plan', 'addInvestmentPlan');
+    });
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -49,6 +55,11 @@ Route::middleware('auth:sanctum')->group(function () {
         // Withdraw Transactions
         Route::post('/withdrawal', 'requestWithdraw');
         Route::post('/withdraw/verify', 'verifyWithdrawCode');
+    });
+
+    // Investment Controller
+    Route::controller(InvestmentController::class)->group(function () {
+        Route::post('/investment', 'investment');
     });
 });
 

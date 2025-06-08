@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignIdFor(PackagePlan::class)->nullable();
             $table->string('plan_amount')->nullable();
             $table->string('plan_profit')->nullable();
-            $table->enum('status', ['active', 'expired'])->nullable();
+            $table->enum('status', ['active', 'expired'])->default('active');
             $table->timestamps();
         });
     }

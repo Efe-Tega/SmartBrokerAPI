@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('package_plans', function (Blueprint $table) {
             $table->id();
-            $table->string('plan_name')->nullable();
-            $table->string('min_amount')->nullable();
-            $table->string('roi')->nullable();
-            $table->string('duration')->nullable();
-            $table->string('total_return')->nullable();
-            $table->json('features')->nullable();
+            $table->string('plan_name')->unique();
+            $table->decimal('min_amount', 8, 2)->nullable();
+            $table->decimal('max_amount', 8, 2)->nullable();
+            $table->integer('roi')->nullable();
+            $table->integer('duration')->nullable();
+            $table->integer('total_return')->nullable();
+            $table->text('features')->nullable();
             $table->timestamps();
         });
     }
