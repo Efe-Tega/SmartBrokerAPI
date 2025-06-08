@@ -61,6 +61,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(InvestmentController::class)->group(function () {
         Route::post('/investment', 'investment');
     });
+
+    // Profile Settings
+    Route::controller(UserProfileController::class)->group(function () {
+        Route::post('/update-profile', 'updateProfile');
+        Route::post('/change/password', 'changePassword');
+    });
 });
 
 Route::get('/user', function (Request $request) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use App\Mail\TwoFactorEmailCode;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -18,7 +19,9 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
+            'username' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
             'email' => 'required|email',
             'password' => 'required|confirmed',
         ]);
@@ -28,13 +31,13 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->name,
+            'username' => $request->username,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'created_at' => Carbon::now()
         ]);
-
-
 
         $token = $user->createToken('user_token')->plainTextToken;
 
@@ -78,7 +81,7 @@ class UserController extends Controller
                 $user->save();
 
                 // Send email
-                Mail::to($user->email)->send(new \App\Mail\TwoFactorEmailCode($code));
+                Mail::to($user->email)->send(new TwoFactorEmailCode($code));
 
                 return response()->json([
                     '2fa_required' => true,
