@@ -9,17 +9,20 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class TwoFactorEmailCode extends Mailable
+class TransactionEmailVerification extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $code;
+    public $amount;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($code)
+    public function __construct($code, $amount)
     {
         $this->code = $code;
+        $this->amount = $amount;
     }
 
     /**
@@ -28,7 +31,7 @@ class TwoFactorEmailCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Two Factor Email Code',
+            subject: 'Transaction Email Verification',
         );
     }
 
@@ -38,10 +41,7 @@ class TwoFactorEmailCode extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.2fa-code',
-            with: [
-                'code' => $this->code,
-            ]
+            view: 'view.name',
         );
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Mail\TwoFactorEmailCode;
+use App\Mail\TransactionEmailVerification;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,6 +14,6 @@ class TwoFactorHelper
 
         Cache::put('withdraw_2fa_' . $user->id, $code, now()->addMinutes(10));
 
-        Mail::to($user->email)->send(new TwoFactorEmailCode($code, $amount));
+        Mail::to($user->email)->send(new TransactionEmailVerification($code, $amount));
     }
 }
