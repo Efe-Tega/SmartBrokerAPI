@@ -13,8 +13,8 @@ class TotpController extends Controller
         $otpauthurl = 'otpauth://totp/Smart%20Broker:user%40gmail.com?secret=NOYLHYMC7FVFH3P7&issuer=Smart%20Broker&algorithm=SHA1&digits=6&period=30';
 
         // Generate QR code data
-        $qrCode = QrCode::size(250)->generate($otpauthurl);
+        // $qrCode = QrCode::size(250)->generate($otpauthurl);
 
-        return view('welcome', compact('qrCode'));
+        // return view('welcome', compact('qrCode'));
     }
 }

@@ -8,7 +8,7 @@
 <body>
     <h1>Scan QR with Google Authenticator</h1>
     <div>
-        {!! $qrCode !!}
+        {{-- {!! $qrCode !!} --}}
     </div>
 </body>
 

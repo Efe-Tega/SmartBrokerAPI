@@ -39,8 +39,13 @@ Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
     });
 });
 
+
+// User Authentication Routes
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [UserController::class, 'logout']);
+    Route::controller(UserController::class)->group(function () {
+        Route::post('/logout',  'logout');
+        Route::post('/change/password', 'changePassword');
+    });
 
     // TOTP Authentication controller
     Route::controller(TotpController::class)->group(function () {
@@ -75,7 +80,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Profile Settings
     Route::controller(UserProfileController::class)->group(function () {
         Route::post('/update-profile', 'updateProfile');
-        Route::post('/change/password', 'changePassword');
     });
 
     // KYC 
