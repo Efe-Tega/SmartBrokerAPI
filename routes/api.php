@@ -38,7 +38,12 @@ Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
 
     // Investment Route
     Route::controller(InvestmentManagement::class)->group(function () {
+        Route::get('/all/investment-plan', 'allInvestmentPlan');
+        Route::get('/edit/investment-plan/{id}', 'editInvestmentPlan');
+        Route::delete('/delete/investment-plan/{id}', 'deleteInvestmentPlan');
+
         Route::post('/add/investment-plan', 'addInvestmentPlan');
+        Route::post('/update/investment-plan', 'updateInvestmentPlan');
     });
 
     // KYC Requests
