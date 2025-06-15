@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\Admin\InvestmentManagement;
 use App\Http\Controllers\Api\v1\Admin\KycManagement;
+use App\Http\Controllers\Api\v1\Admin\TransactionManagement;
 use App\Http\Controllers\Api\v1\Auth\AdminController;
 use App\Http\Controllers\Api\v1\Auth\EmailAuthController;
 use App\Http\Controllers\Api\v1\Auth\TotpController;
@@ -21,9 +22,19 @@ Route::post('/user-registration', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::post('/2fa/verify', [UserController::class, 'verify2FA']);
 
-
+// Admin Auth Route
 Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
+
+    Route::controller(TransactionManagement::class)->group(function () {
+        Route::get('/transactions', 'allTransactions');
+        Route::get('/deposit-transactions', 'depositTransactions');
+        Route::get('/withdraw-transactions', 'withdrawTransactions');
+        Route::get('/transaction/details/{id}', 'transactionDetails');
+        Route::delete('/delete-transaction/{id}', 'deleteTransaction');
+
+        Route::post('/update/transaction', 'updateTransaction');
+    });
 
     // Investment Route
     Route::controller(InvestmentManagement::class)->group(function () {
