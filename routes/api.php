@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Api\v1\Admin\InvestmentManagement;
+use App\Http\Controllers\Api\v1\Admin\KycManagement;
 use App\Http\Controllers\Api\v1\Auth\AdminController;
 use App\Http\Controllers\Api\v1\Auth\EmailAuthController;
 use App\Http\Controllers\Api\v1\Auth\TotpController;
 use App\Http\Controllers\Api\v1\Auth\UserController;
 use App\Http\Controllers\Api\v1\User\InvestmentController;
+use App\Http\Controllers\Api\v1\User\KycController;
 use App\Http\Controllers\Api\v1\User\TransactionController;
 use App\Http\Controllers\Api\v1\User\UserProfileController;
 use Illuminate\Http\Request;
@@ -26,6 +28,14 @@ Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
     // Investment Route
     Route::controller(InvestmentManagement::class)->group(function () {
         Route::post('/add/investment-plan', 'addInvestmentPlan');
+    });
+
+    // KYC Requests
+    Route::controller(KycManagement::class)->group(function () {
+        Route::get('/kyc-request/details/{id}', 'kycDetails');
+
+        Route::post('/kyc-requests', 'kycRequests');
+        Route::post('/update-kyc', 'updateKyc');
     });
 });
 
@@ -66,6 +76,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::controller(UserProfileController::class)->group(function () {
         Route::post('/update-profile', 'updateProfile');
         Route::post('/change/password', 'changePassword');
+    });
+
+    // KYC 
+    Route::controller(KycController::class)->group(function () {
+        Route::post('/upload-kyc', 'uploadKyc');
     });
 });
 
