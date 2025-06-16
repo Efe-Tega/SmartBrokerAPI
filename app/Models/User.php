@@ -23,6 +23,8 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $guarded = [];
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -36,6 +38,11 @@ class User extends Authenticatable
     public function kycProfile()
     {
         return $this->hasOne(KycRequest::class);
+    }
+
+    public function settings()
+    {
+        return $this->hasOne(Settings::class);
     }
 
     public function balance()

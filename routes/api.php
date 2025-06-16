@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\Api\v1\Admin\InvestmentManagement;
 use App\Http\Controllers\Api\v1\Admin\KycManagement;
+use App\Http\Controllers\Api\v1\Admin\SettingsManagement;
 use App\Http\Controllers\Api\v1\Admin\TransactionManagement;
+use App\Http\Controllers\Api\v1\Admin\UserManagement;
 use App\Http\Controllers\Api\v1\Auth\AdminController;
 use App\Http\Controllers\Api\v1\Auth\EmailAuthController;
 use App\Http\Controllers\Api\v1\Auth\TotpController;
@@ -26,6 +28,15 @@ Route::post('/2fa/verify', [UserController::class, 'verify2FA']);
 Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
     Route::post('/admin/logout', [AdminController::class, 'logout']);
 
+    // User Management Routes
+    Route::controller(UserManagement::class)->group(function () {
+        Route::get('/users', 'allUsers');
+        Route::get('/user/details/{id}', 'userDetails');
+
+        Route::post('/user/update', 'updateUser');
+    });
+
+    // Transactions 
     Route::controller(TransactionManagement::class)->group(function () {
         Route::get('/transactions', 'allTransactions');
         Route::get('/deposit-transactions', 'depositTransactions');
@@ -52,6 +63,12 @@ Route::middleware(['auth:sanctum', 'ensure.admin'])->group(function () {
 
         Route::post('/kyc-requests', 'kycRequests');
         Route::post('/update-kyc', 'updateKyc');
+    });
+
+    // Settings
+    Route::controller(SettingsManagement::class)->group(function () {
+        // Ajax or JavaScript Request
+        Route::post('/user/toggle-status/{id}', 'toggleUserStatus');
     });
 });
 
